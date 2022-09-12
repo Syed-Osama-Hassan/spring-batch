@@ -24,21 +24,36 @@ public class JobConfig {
     @Bean
     public Job firstJob() {
         return jobBuilderFactory.get("First Job")
-                .start(getStep()).build();
+                .start(getFirstStep())
+                .next(getSecondStep())
+                .build();
 
     }
 
-    private Step getStep() {
+    private Step getFirstStep() {
         return stepBuilderFactory.get("First Step")
-                .tasklet(getTask())
+                .tasklet(getFirstTask())
                 .build();
     }
 
-    private Tasklet getTask() {
+    private Step getSecondStep() {
+        return stepBuilderFactory.get("Second Step")
+                .tasklet(getSecondTask())
+                .build();
+    }
+
+    private Tasklet getFirstTask() {
+        return (stepContribution, chunkContext) -> {
+            System.out.println("This is our first tasklet step.");
+            return RepeatStatus.FINISHED;
+        };
+    }
+
+    private Tasklet getSecondTask() {
         return new Tasklet() {
             @Override
-            public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                System.out.println("This is our first tasklet step.");
+            public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+                System.out.println("This is our second tasklet step.");
                 return RepeatStatus.FINISHED;
             }
         };
