@@ -1,6 +1,7 @@
 package com.syed.osama.hassan.springbatchintro.config;
 
 import com.syed.osama.hassan.springbatchintro.listener.FirstJobListener;
+import com.syed.osama.hassan.springbatchintro.listener.FirstStepListener;
 import com.syed.osama.hassan.springbatchintro.service.SecondTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -27,6 +28,8 @@ public class JobConfig {
     @Autowired
     private FirstJobListener firstJobListener;
 
+    @Autowired
+    private FirstStepListener firstStepListener;
 
 
     @Bean
@@ -43,6 +46,7 @@ public class JobConfig {
     private Step getFirstStep() {
         return stepBuilderFactory.get("First Step")
                 .tasklet(getFirstTask())
+                .listener(firstStepListener)
                 .build();
     }
 
