@@ -1,5 +1,6 @@
 package com.syed.osama.hassan.springbatchintro.config;
 
+import com.syed.osama.hassan.springbatchintro.service.SecondTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -20,6 +21,9 @@ public class JobConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
+    @Autowired
+    private SecondTasklet secondTasklet;
+
 
     @Bean
     public Job firstJob() {
@@ -38,7 +42,7 @@ public class JobConfig {
 
     private Step getSecondStep() {
         return stepBuilderFactory.get("Second Step")
-                .tasklet(getSecondTask())
+                .tasklet(secondTasklet)
                 .build();
     }
 
@@ -49,13 +53,13 @@ public class JobConfig {
         };
     }
 
-    private Tasklet getSecondTask() {
-        return new Tasklet() {
-            @Override
-            public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
-                System.out.println("This is our second tasklet step.");
-                return RepeatStatus.FINISHED;
-            }
-        };
-    }
+//    private Tasklet getSecondTask() {
+//        return new Tasklet() {
+//            @Override
+//            public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+//                System.out.println("This is our second tasklet step.");
+//                return RepeatStatus.FINISHED;
+//            }
+//        };
+//    }
 }
