@@ -2,7 +2,10 @@ package com.syed.osama.hassan.springbatchintro.config;
 
 import com.syed.osama.hassan.springbatchintro.listener.FirstJobListener;
 import com.syed.osama.hassan.springbatchintro.listener.FirstStepListener;
+import com.syed.osama.hassan.springbatchintro.processor.FirstItemProcessor;
+import com.syed.osama.hassan.springbatchintro.reader.FirstItemReader;
 import com.syed.osama.hassan.springbatchintro.service.SecondTasklet;
+import com.syed.osama.hassan.springbatchintro.writer.FirstItemWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -31,6 +34,14 @@ public class JobConfig {
     @Autowired
     private FirstStepListener firstStepListener;
 
+    @Autowired
+    private FirstItemReader firstItemReader;
+
+    @Autowired
+    private FirstItemProcessor firstItemProcessor;
+
+    @Autowired
+    private FirstItemWriter firstItemWriter;
 
     @Bean
     public Job firstJob() {
@@ -42,6 +53,7 @@ public class JobConfig {
                 .build();
 
     }
+
 
     private Step getFirstStep() {
         return stepBuilderFactory.get("First Step")
@@ -61,6 +73,23 @@ public class JobConfig {
             System.out.println("This is our first tasklet step.");
             return RepeatStatus.FINISHED;
         };
+    }
+
+    @Bean
+    public Job firstJobWithChunkOrientedStep() {
+        return jobBuilderFactory.get("Job with chunk oriented step")
+                .incrementer(new RunIdIncrementer())
+                .start(firstChunkStep())
+                .build();
+
+    }
+    private Step firstChunkStep() {
+        return stepBuilderFactory.get("First chunk step")
+                .<Integer, Long>chunk(3)
+                .reader(firstItemReader)
+                .processor(firstItemProcessor)
+                .writer(firstItemWriter)
+                .build();
     }
 
 }
