@@ -43,7 +43,7 @@ public class JobConfig {
     @Autowired
     private FirstItemWriter firstItemWriter;
 
-    @Bean("firstJob")
+    @Bean("First Job")
     public Job firstJob() {
         return jobBuilderFactory.get("First Job")
                 .incrementer(new RunIdIncrementer())
@@ -75,7 +75,7 @@ public class JobConfig {
         };
     }
 
-    @Bean("chunkJob")
+    @Bean("Second Job")
     public Job firstJobWithChunkOrientedStep() {
         return jobBuilderFactory.get("Job with chunk oriented step")
                 .incrementer(new RunIdIncrementer())
