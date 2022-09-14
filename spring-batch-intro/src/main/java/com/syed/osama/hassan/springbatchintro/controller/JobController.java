@@ -1,5 +1,6 @@
 package com.syed.osama.hassan.springbatchintro.controller;
 
+import com.syed.osama.hassan.springbatchintro.service.JobService;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -18,37 +19,11 @@ import java.util.Map;
 @RequestMapping("/api/job")
 public class JobController {
     @Autowired
-    private final JobLauncher jobLauncher;
-
-    @Qualifier("firstJob")
-    @Autowired
-    private Job firstJob;
-
-    @Qualifier("chunkJob")
-    @Autowired
-    private Job secondJob;
-
-    public JobController(JobLauncher jobLauncher) {
-        this.jobLauncher = jobLauncher;
-    }
+    private JobService jobService;
 
     @GetMapping("/start/{jobName}")
     public String startJob(@PathVariable String jobName) {
-
-        Map<String, JobParameter> params = new HashMap<>();
-        params.put("Current Time", new JobParameter(System.currentTimeMillis()));
-        JobParameters jobParameters = new JobParameters(params);
-
-        try {
-            if("First Job".equals(jobName)) {
-                jobLauncher.run(firstJob, jobParameters);
-            } else if("Second Job".equals(jobName)) {
-                jobLauncher.run(secondJob, jobParameters);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        jobService.startJob(jobName);
         return "Job Started!";
     }
 }
