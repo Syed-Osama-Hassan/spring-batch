@@ -1,11 +1,9 @@
 package com.syed.osama.hassan.springbatchitemreaders.config;
 
-import com.syed.osama.hassan.springbatchitemreaders.model.StudentCsv;
-import com.syed.osama.hassan.springbatchitemreaders.model.StudentJdbc;
-import com.syed.osama.hassan.springbatchitemreaders.model.StudentJson;
-import com.syed.osama.hassan.springbatchitemreaders.model.StudentXml;
+import com.syed.osama.hassan.springbatchitemreaders.model.*;
 import com.syed.osama.hassan.springbatchitemreaders.processor.FirstItemProcessor;
 import com.syed.osama.hassan.springbatchitemreaders.reader.FirstItemReader;
+import com.syed.osama.hassan.springbatchitemreaders.service.StudentService;
 import com.syed.osama.hassan.springbatchitemreaders.writer.FirstItemWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -13,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.adapter.ItemReaderAdapter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -50,6 +49,9 @@ public class JobConfig {
     private FirstItemWriter firstItemWriter;
 
     @Autowired
+    private StudentService studentService;
+
+    @Autowired
     @Qualifier("universityDS")
     private DataSource dataSource;
 
@@ -64,8 +66,9 @@ public class JobConfig {
 
     private Step firstChunkStep() {
         return stepBuilderFactory.get("First chunk step")
-                .<StudentJdbc, StudentJdbc>chunk(3)
-                .reader(jdbcCursorItemReader())
+                .<StudentResponse, StudentResponse>chunk(3)
+                .reader(responseItemReaderAdapter())
+//                .reader(jdbcCursorItemReader())
 //                .reader(xmlStaxEventItemReader(null))
 //                .reader(jsonItemReader(null))
 //                .reader(flatFileItemReader(null))
@@ -152,5 +155,13 @@ public class JobConfig {
         jdbcCursorItemReader.setRowMapper(new BeanPropertyRowMapper<>(StudentJdbc.class));
 
         return jdbcCursorItemReader;
+    }
+
+    public ItemReaderAdapter<StudentResponse> responseItemReaderAdapter() {
+        ItemReaderAdapter<StudentResponse> responseItemReaderAdapter = new ItemReaderAdapter<>();
+        responseItemReaderAdapter.setTargetObject(studentService);
+        responseItemReaderAdapter.setTargetMethod("getStudent");
+
+        return responseItemReaderAdapter;
     }
 }
