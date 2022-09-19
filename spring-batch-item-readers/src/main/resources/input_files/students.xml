@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<students>
+    <student>
+        <id>1</id>
+        <firstName>John</firstName>
+        <lastName>Doe</lastName>
+        <email>john@test.com</email>
+    </student>
+
+    <student>
+        <id>2</id>
+        <firstName>John</firstName>
+        <lastName>Smith</lastName>
+        <email>smith@test.com</email>
+    </student>
+
+    <student>
+        <id>3</id>
+        <firstName>Peter</firstName>
+        <lastName>Parker</lastName>
+        <email>peter@test.com</email>
+    </student>
+
+    <student>
+        <id>4</id>
+        <firstName>Tam</firstName>
+        <lastName>Pete</lastName>
+        <email>pete@test.com</email>
+    </student>
+
+    <student>
+        <id>5</id>
+        <firstName>Larry</firstName>
+        <lastName>scott</lastName>
+        <email>larry@test.com</email>
+    </student>
+
+    <student>
+        <id>6</id>
+        <firstName>Michael</firstName>
+        <lastName>Jordan</lastName>
+        <email>michael@test.com</email>
+    </student>
+
+    <student>
+        <id>7</id>
+        <firstName>Elon</firstName>
+        <lastName>Musk</lastName>
+        <email>elon@test.com</email>
+    </student>
+
+    <student>
+        <id>8</id>
+        <firstName>Bill</firstName>
+        <lastName>Gates</lastName>
+        <email>bill@test.com</email>
+    </student>
+
+    <student>
+        <id>9</id>
+        <firstName>Diana</firstName>
+        <lastName>White</lastName>
+        <email>diana@test.com</email>
+    </student>
+
+    <student>
+        <id>10</id>
+        <firstName>Dan</firstName>
+        <lastName>Brown</lastName>
+        <email>dan@test.com</email>
+    </student>
+</students>
