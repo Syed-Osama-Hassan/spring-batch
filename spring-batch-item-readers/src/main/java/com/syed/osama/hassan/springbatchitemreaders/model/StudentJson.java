@@ -1,5 +1,8 @@
 package com.syed.osama.hassan.springbatchitemreaders.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StudentJson {
     private Long id;
     private String firstName;
