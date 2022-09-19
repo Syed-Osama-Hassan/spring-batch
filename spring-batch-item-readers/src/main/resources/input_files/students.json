@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@gmail.com"
+  },
+  {
+    "id": 2,
+    "firstName": "John",
+    "lastName": "Smith",
+    "email": "smith@gmail.com"
+  },
+  {
+    "id": 3,
+    "firstName": "Peter",
+    "lastName": "Parker",
+    "email": "peter@gmail.com"
+  },
+  {
+    "id": 4,
+    "firstName": "Tam",
+    "lastName": "Pete",
+    "email": "pete@gmail.com"
+  },
+  {
+    "id": 5,
+    "firstName": "Jolie",
+    "lastName": "Rich",
+    "email": "jolie@gmail.com"
+  },
+  {
+    "id": 6,
+    "firstName": "Elon",
+    "lastName": "Musk",
+    "email": "elon@gmail.com"
+  },
+  {
+    "id": 7,
+    "firstName": "Bill",
+    "lastName": "Gates",
+    "email": "bill@gmail.com"
+  },
+  {
+    "id": 8,
+    "firstName": "Larry",
+    "lastName": "Scott",
+    "email": "larry@gmail.com"
+  },
+  {
+    "id": 9,
+    "firstName": "Dan",
+    "lastName": "Brown",
+    "email": "brown@gmail.com"
+  },
+  {
+    "id": 10,
+    "firstName": "Jeff",
+    "lastName": "Bezos",
+    "email": "jeff@gmail.com"
+  }
+]

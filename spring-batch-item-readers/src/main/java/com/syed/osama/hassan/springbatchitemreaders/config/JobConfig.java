@@ -1,6 +1,7 @@
 package com.syed.osama.hassan.springbatchitemreaders.config;
 
 import com.syed.osama.hassan.springbatchitemreaders.model.StudentCsv;
+import com.syed.osama.hassan.springbatchitemreaders.model.StudentJson;
 import com.syed.osama.hassan.springbatchitemreaders.processor.FirstItemProcessor;
 import com.syed.osama.hassan.springbatchitemreaders.reader.FirstItemReader;
 import com.syed.osama.hassan.springbatchitemreaders.writer.FirstItemWriter;
@@ -14,16 +15,13 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.json.JacksonJsonObjectReader;
+import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.PathResource;
-
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 
 @Configuration
 public class JobConfig {
@@ -53,8 +51,9 @@ public class JobConfig {
 
     private Step firstChunkStep() {
         return stepBuilderFactory.get("First chunk step")
-                .<StudentCsv, StudentCsv>chunk(3)
-                .reader(flatFileItemReader(null))
+                .<StudentJson, StudentJson>chunk(3)
+                .reader(jsonItemReader(null))
+//                .reader(flatFileItemReader(null))
 //                .processor(firstItemProcessor)
                 .writer(firstItemWriter)
                 .build();
@@ -68,25 +67,49 @@ public class JobConfig {
         FlatFileItemReader<StudentCsv> flatFileItemReader = new FlatFileItemReader<>();
         flatFileItemReader.setResource(fileSystemResource);
 
-        flatFileItemReader.setLineMapper(new DefaultLineMapper<StudentCsv>(){
-            {
-                setLineTokenizer(new DelimitedLineTokenizer() {
-                    {
-                        setNames("ID", "First Name", "Last Name", "Email");
-                    }
-                });
+//        flatFileItemReader.setLineMapper(new DefaultLineMapper<StudentCsv>(){
+//            {
+//                setLineTokenizer(new DelimitedLineTokenizer() {
+//                    {
+//                        setNames("ID", "First Name", "Last Name", "Email");
+//                    }
+//                });
+//
+//                setFieldSetMapper(new BeanWrapperFieldSetMapper<StudentCsv>(){
+//                    {
+//                        setTargetType(StudentCsv.class);
+//                    }
+//                });
+//            }
+//        });
 
-                setFieldSetMapper(new BeanWrapperFieldSetMapper<StudentCsv>(){
-                    {
-                        setTargetType(StudentCsv.class);
-                    }
-                });
-            }
-        });
+        DefaultLineMapper<StudentCsv> defaultLineMapper = new DefaultLineMapper<>();
 
+        DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
+        delimitedLineTokenizer.setNames("ID", "First Name", "Last Name", "Email");
+
+        BeanWrapperFieldSetMapper<StudentCsv> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        beanWrapperFieldSetMapper.setTargetType(StudentCsv.class);
+
+        defaultLineMapper.setLineTokenizer(delimitedLineTokenizer);
+        defaultLineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);
+
+        flatFileItemReader.setLineMapper(defaultLineMapper);
         flatFileItemReader.setLinesToSkip(1);
 
         return flatFileItemReader;
+    }
+
+    @Bean
+    @StepScope
+    public JsonItemReader<StudentJson> jsonItemReader(
+            @Value("#{jobParameters['inputFile']}") FileSystemResource fileSystemResource) {
+        JsonItemReader<StudentJson> jsonItemReader = new JsonItemReader<>();
+        jsonItemReader.setResource(fileSystemResource);
+        jsonItemReader.setJsonObjectReader(new JacksonJsonObjectReader<>(StudentJson.class));
+
+
+        return jsonItemReader;
     }
 
 }
