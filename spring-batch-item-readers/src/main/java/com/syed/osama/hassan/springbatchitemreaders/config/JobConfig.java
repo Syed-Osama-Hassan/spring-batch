@@ -55,25 +55,28 @@ public class JobConfig {
     @Qualifier("universityDS")
     private DataSource dataSource;
 
+    @Autowired
+    private ItemWriterConfig itemWriterConfig;
+
     @Bean
     public Job firstJobWithChunkOrientedStep() {
         return jobBuilderFactory.get("Job with chunk oriented step")
                 .incrementer(new RunIdIncrementer())
                 .start(firstChunkStep())
                 .build();
-
     }
 
     private Step firstChunkStep() {
         return stepBuilderFactory.get("First chunk step")
-                .<StudentResponse, StudentResponse>chunk(3)
-                .reader(responseItemReaderAdapter())
-//                .reader(jdbcCursorItemReader())
+                .<StudentJdbc, StudentJdbc>chunk(3)
+//                .reader(responseItemReaderAdapter())
+                .reader(jdbcCursorItemReader())
 //                .reader(xmlStaxEventItemReader(null))
 //                .reader(jsonItemReader(null))
 //                .reader(flatFileItemReader(null))
 //                .processor(firstItemProcessor)
-                .writer(firstItemWriter)
+//                .writer(firstItemWriter)
+                .writer(itemWriterConfig.flatFileItemWriter(null))
                 .build();
     }
 
