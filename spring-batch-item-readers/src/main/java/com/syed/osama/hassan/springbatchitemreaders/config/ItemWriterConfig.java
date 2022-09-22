@@ -7,6 +7,8 @@ import org.springframework.batch.item.file.FlatFileHeaderCallback;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
+import org.springframework.batch.item.json.JsonFileItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,6 +51,17 @@ public class ItemWriterConfig {
         });
 
         return flatFileItemWriter;
+    }
+
+    @Bean
+    @StepScope
+    public JsonFileItemWriter<StudentJdbc> jsonFileItemWriter(
+            @Value("#{jobParameters['outputFile']}") FileSystemResource fileSystemResource
+    ) {
+        JsonFileItemWriter<StudentJdbc> jsonFileItemWriter = new JsonFileItemWriter<>(
+                fileSystemResource, new JacksonJsonObjectMarshaller<StudentJdbc>());
+
+        return jsonFileItemWriter;
     }
 
 }

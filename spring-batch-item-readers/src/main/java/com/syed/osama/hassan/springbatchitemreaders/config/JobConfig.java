@@ -76,7 +76,8 @@ public class JobConfig {
 //                .reader(flatFileItemReader(null))
 //                .processor(firstItemProcessor)
 //                .writer(firstItemWriter)
-                .writer(itemWriterConfig.flatFileItemWriter(null))
+//                .writer(itemWriterConfig.flatFileItemWriter(null))
+                .writer(itemWriterConfig.jsonFileItemWriter(null))
                 .build();
     }
 
