@@ -1,5 +1,8 @@
 package com.syed.osama.hassan.springbatchitemreaders.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "student")
 public class StudentJdbc {
     private Long id;
     private String firstName;

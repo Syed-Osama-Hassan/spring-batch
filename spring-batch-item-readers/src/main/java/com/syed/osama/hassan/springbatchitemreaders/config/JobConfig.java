@@ -77,7 +77,8 @@ public class JobConfig {
 //                .processor(firstItemProcessor)
 //                .writer(firstItemWriter)
 //                .writer(itemWriterConfig.flatFileItemWriter(null))
-                .writer(itemWriterConfig.jsonFileItemWriter(null))
+//                .writer(itemWriterConfig.jsonFileItemWriter(null))
+                .writer(itemWriterConfig.staxEventItemWriter(null))
                 .build();
     }
 

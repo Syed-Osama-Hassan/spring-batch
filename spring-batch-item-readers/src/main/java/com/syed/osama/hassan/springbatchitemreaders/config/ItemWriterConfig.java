@@ -9,10 +9,12 @@ import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
 import org.springframework.batch.item.json.JsonFileItemWriter;
+import org.springframework.batch.item.xml.StaxEventItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -62,6 +64,23 @@ public class ItemWriterConfig {
                 fileSystemResource, new JacksonJsonObjectMarshaller<StudentJdbc>());
 
         return jsonFileItemWriter;
+    }
+
+    @Bean
+    @StepScope
+    public StaxEventItemWriter<StudentJdbc> staxEventItemWriter(
+            @Value("#{jobParameters['outputFile']}") FileSystemResource fileSystemResource
+    ) {
+        StaxEventItemWriter<StudentJdbc> staxEventItemWriter = new StaxEventItemWriter<>();
+        staxEventItemWriter.setResource(fileSystemResource);
+        staxEventItemWriter.setRootTagName("students");
+        staxEventItemWriter.setMarshaller(new Jaxb2Marshaller(){
+            {
+                setClassesToBeBound(StudentJdbc.class);
+            }
+        });
+
+        return staxEventItemWriter;
     }
 
 }
