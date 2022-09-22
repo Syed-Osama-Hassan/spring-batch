@@ -68,17 +68,18 @@ public class JobConfig {
 
     private Step firstChunkStep() {
         return stepBuilderFactory.get("First chunk step")
-                .<StudentJdbc, StudentJdbc>chunk(3)
+                .<StudentCsv, StudentCsv>chunk(3)
 //                .reader(responseItemReaderAdapter())
-                .reader(jdbcCursorItemReader())
+//                .reader(jdbcCursorItemReader())
 //                .reader(xmlStaxEventItemReader(null))
 //                .reader(jsonItemReader(null))
-//                .reader(flatFileItemReader(null))
+                .reader(flatFileItemReader(null))
 //                .processor(firstItemProcessor)
 //                .writer(firstItemWriter)
 //                .writer(itemWriterConfig.flatFileItemWriter(null))
 //                .writer(itemWriterConfig.jsonFileItemWriter(null))
-                .writer(itemWriterConfig.staxEventItemWriter(null))
+//                .writer(itemWriterConfig.staxEventItemWriter(null))
+                .writer(itemWriterConfig.jdbcBatchItemWriter())
                 .build();
     }
 
