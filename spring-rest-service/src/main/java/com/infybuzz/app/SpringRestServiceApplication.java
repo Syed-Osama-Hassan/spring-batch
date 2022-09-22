@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @RestController
@@ -31,6 +29,14 @@ public class SpringRestServiceApplication {
 				new StudentResponse(8L, "Tina", "Kapoor", "tina@gmail.com"),
 				new StudentResponse(9L, "Mona", "Sharma", "mona@gmail.com"),
 				new StudentResponse(10L, "Rahul", "Varma", "rahul@gmail.com"));
+	}
+
+	@PostMapping("/create")
+	public StudentResponse createStudent(@RequestBody StudentResponse studentResponse) {
+		System.out.println("Student created with ID: " + studentResponse.getId());
+		return new StudentResponse(studentResponse.getId(),
+				studentResponse.getFirstName(), studentResponse.getLastName(),
+				studentResponse.getEmail());
 	}
 
 }

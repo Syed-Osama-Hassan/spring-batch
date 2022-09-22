@@ -1,5 +1,6 @@
 package com.syed.osama.hassan.springbatchitemreaders.service;
 
+import com.syed.osama.hassan.springbatchitemreaders.model.StudentCsv;
 import com.syed.osama.hassan.springbatchitemreaders.model.StudentResponse;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,11 @@ public class StudentService {
         }
 
         return null;
+    }
+
+    public StudentResponse restCallToCreateStudent(StudentCsv studentCsv) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForObject("http://localhost:8081/api/v1/create",
+                studentCsv, StudentResponse.class);
     }
 }

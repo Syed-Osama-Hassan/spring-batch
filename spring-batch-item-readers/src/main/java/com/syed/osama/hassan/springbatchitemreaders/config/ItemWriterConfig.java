@@ -2,7 +2,9 @@ package com.syed.osama.hassan.springbatchitemreaders.config;
 
 import com.syed.osama.hassan.springbatchitemreaders.model.StudentCsv;
 import com.syed.osama.hassan.springbatchitemreaders.model.StudentJdbc;
+import com.syed.osama.hassan.springbatchitemreaders.service.StudentService;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.adapter.ItemWriterAdapter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.ItemPreparedStatementSetter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -34,6 +36,9 @@ public class ItemWriterConfig {
     @Autowired
     @Qualifier("universityDS")
     private DataSource dataSource;
+
+    @Autowired
+    private StudentService studentService;
 
     @Bean
     @StepScope
@@ -118,6 +123,14 @@ public class ItemWriterConfig {
         });*/
 
         return jdbcBatchItemWriter;
+    }
+
+    public ItemWriterAdapter<StudentCsv> itemWriterAdapter() {
+        ItemWriterAdapter<StudentCsv> itemWriterAdapter = new ItemWriterAdapter<>();
+        itemWriterAdapter.setTargetObject(studentService);
+        itemWriterAdapter.setTargetMethod("restCallToCreateStudent");
+
+        return itemWriterAdapter;
     }
 
 }
