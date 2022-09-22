@@ -11,9 +11,11 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy;
 import org.springframework.batch.item.adapter.ItemReaderAdapter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
@@ -81,6 +83,9 @@ public class JobConfig {
 //                .writer(itemWriterConfig.staxEventItemWriter(null))
 //                .writer(itemWriterConfig.jdbcBatchItemWriter())
                 .writer(itemWriterConfig.itemWriterAdapter())
+                .faultTolerant()
+                .skip(FlatFileParseException.class)
+                .skipPolicy(new AlwaysSkipItemSkipPolicy())
                 .build();
     }
 
