@@ -1,5 +1,6 @@
 package com.syed.osama.hassan.springbatchitemreaders.config;
 
+import com.syed.osama.hassan.springbatchitemreaders.listener.SkipListener;
 import com.syed.osama.hassan.springbatchitemreaders.model.*;
 import com.syed.osama.hassan.springbatchitemreaders.processor.FirstItemProcessor;
 import com.syed.osama.hassan.springbatchitemreaders.reader.FirstItemReader;
@@ -60,6 +61,9 @@ public class JobConfig {
     @Autowired
     private ItemWriterConfig itemWriterConfig;
 
+    @Autowired
+    private SkipListener skipListener;
+
     @Bean
     public Job firstJobWithChunkOrientedStep() {
         return jobBuilderFactory.get("Job with chunk oriented step")
@@ -81,11 +85,12 @@ public class JobConfig {
 //                .writer(itemWriterConfig.flatFileItemWriter(null))
 //                .writer(itemWriterConfig.jsonFileItemWriter(null))
 //                .writer(itemWriterConfig.staxEventItemWriter(null))
-//                .writer(itemWriterConfig.jdbcBatchItemWriter())
-                .writer(itemWriterConfig.itemWriterAdapter())
+                .writer(itemWriterConfig.jdbcBatchItemWriter())
+//                .writer(itemWriterConfig.itemWriterAdapter())
                 .faultTolerant()
                 .skip(FlatFileParseException.class)
                 .skipPolicy(new AlwaysSkipItemSkipPolicy())
+                .listener(skipListener)
                 .build();
     }
 
