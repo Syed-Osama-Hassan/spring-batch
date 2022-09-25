@@ -6,6 +6,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
@@ -56,6 +57,16 @@ public class DBConfig {
         em.afterPropertiesSet();
 
         return em.getObject();
+    }
+
+    @Bean
+    @Primary
+    public JpaTransactionManager jpaTransactionManager() {
+        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+        jpaTransactionManager.setDataSource(universityDataSource());
+        jpaTransactionManager.setEntityManagerFactory(mysqlEntityManagerFactory());
+
+        return jpaTransactionManager;
     }
 
 }

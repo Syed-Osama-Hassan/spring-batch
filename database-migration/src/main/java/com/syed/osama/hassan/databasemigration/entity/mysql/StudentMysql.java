@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "student")
-public class Student {
+public class StudentMysql {
     @Id
     private Long id;
     @Column(name = "first_name")
