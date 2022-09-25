@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://localhost:3306/spring_batch
+    username: root
+    password: root
+
+  universitydatasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://localhost:3306/university
+    username: root
+    password: root
+
+  postgresdatasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/university
+    username: postgres
+    password: root
+
+  batch:
+    jdbc:
+      initialize-schema: always
